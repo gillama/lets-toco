@@ -5,7 +5,8 @@ export const getRooms = async () => {
   let rooms = await fetch(`http://api2.scaledrone.com/${channelID}/rooms`, {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'mode':'same-origin'
     }
   })
   .then(response => {
@@ -14,7 +15,7 @@ export const getRooms = async () => {
   .catch(error => {
     console.log(error);
   });
-  return ['room1', 'room2'];
+  return ['room'];
 };
 
 export const sendMessage = (room, message) => {
@@ -26,13 +27,5 @@ export const sendMessage = (room, message) => {
 
 export const subscribe = (roomName, onNewMessage) => {
   const room = sd.subscribe(roomName);
-
-  room.on('open', error => {
-    if (error) {
-      return console.error(error);
-    }
-  });
-
-  room.on('message', message => {
-  });
+  room.on('message', onNewMessage);
 };

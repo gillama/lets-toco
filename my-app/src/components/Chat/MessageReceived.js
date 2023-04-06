@@ -4,11 +4,11 @@ import avatar from '../../assets/avatar.png'
 import './MessageReceived.css';
 
 
-const MessageReceived = () => {
+const MessageReceived = (props) => {
   return (
     <div className="chat-message message-received">
     <img src={avatar} width="40px" height="40px"></img>
-    <p><b>Name</b><br/>Hello!</p>
+    <p><b>{props.name}</b> <br/>{props.message}</p>
   </div>
   )
 };

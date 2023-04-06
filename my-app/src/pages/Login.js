@@ -1,15 +1,23 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import routes from '../data/routes';
-import { useState } from 'react';
-import { Contact } from '../App';
+import { useState, useEffect } from 'react';
+import { User } from '../App';
 import Logo from '../assets/logo.png';
+import sha256 from 'crypto-js/sha256';
 
 import './Login.css';
 
-
 const Login = (props) => {
 
+  const [registeredUser, setRegisteredUser] = useState(() => {
+    const saved = {
+      username: localStorage.getItem("username"),
+      password: localStorage.getItem("password"),
+      email: localStorage.getItem("email"),
+    };
+    return saved || {};
+  });
   const [isHidden, setIsHidden] = useState(true);
   const showRegisterForm = () => {
     setIsHidden(false);
@@ -36,19 +44,12 @@ const Login = (props) => {
     if (loginDataMissing) {
       alert("Please fill all the fields!");
       return;
-    }
-
-
-
-    for (let index = 0; index < props.contactList.length; index++) {
-      const contact = props.contactList[index];
-      const loginUsername = contact.username;
-      const loginPassword = contact.password;
-      if (loginUsername === loginDataValues[0] && loginPassword === loginDataValues[1]) {
+    } else if (registeredUser.username === loginDataValues[0] && registeredUser.password == sha256(loginDataValues[1]).toString()) {
+        props.onSuccessfullyLogin(registeredUser.username);
         navigate(routes.chat);
         return;
-      }
     }
+    console.log(sha256(loginDataValues[1]).toString())
     return alert ("Invalid username or password!");
   };
 
@@ -63,11 +64,20 @@ const Login = (props) => {
       alert("Please fill all the fields!");
       return;
     }
-    const contact = new Contact(...registerDataValues);
-    props.onSuccessfullyRegister(contact);
+
+    let user = new User(...registerDataValues);
+    user.password = sha256(user.password);
+    setRegisteredUser(user);
+    alert ("Hello! Welcome to Let's Toco - web chat application. You have successfuly registered. Please login now to use app!")
     setIsHidden(true);
     event.currentTarget.reset();
   };
+
+  useEffect(() => {
+    localStorage.setItem("username", registeredUser.username);
+    localStorage.setItem("email", registeredUser.email);
+    localStorage.setItem("password", registeredUser.password);
+  }, [registeredUser]);
 
   return (
     <div className='homepage'>
@@ -88,7 +98,6 @@ const Login = (props) => {
           </form>
       </div>
     </div>
-
   )
 };
 

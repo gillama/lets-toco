@@ -5,7 +5,10 @@ import Footer from '../components/Chat/Footer';
 import User from '../components/Chat/User';
 import Header from '../components/Chat/Header';
 import MessageSent from '../components/Chat/MessageSent';
+import MessageReceived from '../components/Chat/MessageReceived';
 import { useState, useEffect } from 'react';
+
+import notification from '../assets/notification.mp3';
 
 import './Chat.css';
 import { getRooms, sendMessage, subscribe } from '../services/Messaging';
@@ -19,17 +22,22 @@ const Chat = (props) => {
   const [currentRoom, setCurrentRoom] = useState('');
   const [messageToSend, setMessageToSend] = useState('');
 
-  const [currentMessages, setCurrentMessages] = useState([]);
+  const [sentMessages, setSentMessages] = useState([]);
+  const [receivedMessages, setReceivedMessages] = useState([]);
 
   const [users, setUsers] = useState(['ana', 'petar','mate']);
 
   const onNewMessage = (message) => {
-    setCurrentMessages([...currentMessages, message]);
-    console.log(currentMessages);
+    if (message.data.username === props.username) {
+      return;
+    }
+
+    const sound = new Audio(notification);
+    sound.play();
+    setReceivedMessages([...receivedMessages, message.data]);
   }
 
   useEffect(() => {
-    subscribe('room', onNewMessage);
     getRooms()
       .then((rooms) => {
         setActiveRooms(rooms)
@@ -42,9 +50,8 @@ const Chat = (props) => {
 
   const onSubscribeRoom = (room) => {
     setCurrentRoom(room);
+    subscribe(room, onNewMessage);
   };
-
-
 
   const handleSearch = (e) => {
     const input = e.target.value;
@@ -59,10 +66,19 @@ const Chat = (props) => {
     };
   };
 
-
   const onSendMessage = () => {
-    setCurrentMessages([...currentMessages, messageToSend]);
-    sendMessage(currentRoom, messageToSend);
+    if (currentRoom === '') {
+      alert("Please pick the room before sending your message!");
+      return;
+    }
+
+    const message = {
+      username: props.username,
+      data: messageToSend
+    };
+
+    setSentMessages([...sentMessages, message]);
+    sendMessage(currentRoom, message);
     setMessageToSend('');
   };
 
@@ -81,8 +97,8 @@ const Chat = (props) => {
                 onChange = {handleSearch}/>
           </div>
         </div>
-        { filteredRooms.map((room, i) => <Room name={room} key={i} onClick={ onSubscribeRoom }/>)}
-        { filteredRooms.length === 0 && <p>No room found</p> }
+        { filteredRooms && filteredRooms.map((room, i) => <Room name={room} key={i} onClick={ onSubscribeRoom }/>)}
+        { !filteredRooms && <p>No room found</p> }
       </div>
       <div className="chat-window">
         <div className="chat-room">
@@ -90,7 +106,10 @@ const Chat = (props) => {
         </div>
         <div className="chat-conversation">
           {
-            currentMessages.map((message) => <MessageSent name={props.username} message={message}/>)
+            sentMessages.map((message) => <MessageSent name={props.username} message={message.data}/>)
+          }
+          {
+            receivedMessages.map((message) => <MessageReceived name={message.username} message={message.data}/>)
           }
         </div>
         <div className="send">
@@ -105,9 +124,6 @@ const Chat = (props) => {
           <h3>Users</h3>
         </div>
         {users.map((element,i)=> <User name={element} key={i} status='online' />)}
-        {/*<Contact name={props.contacts[0].username} status='online' />
-        <Contact name={props.contacts[1].username} status='idle' />
-        <Contact name={props.contacts[2].username} status='offline' />*/}
       </div>
     </div>
     <Footer />

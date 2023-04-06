@@ -10,7 +10,7 @@ import Footer from './components/Chat/Footer';
 import './App.css';
 
 
-export function Contact(
+export function User(
   username,
   email,
   password,
@@ -20,48 +20,25 @@ export function Contact(
   this.password = password;
 }
 
-  const contacts = [
-    new Contact (
-      'Ana',
-      'ana.anic@email.com',
-      '12345abcd'
-    ),
-    new Contact (
-      'Petar',
-      'petar.peric@email.com',
-      'abcdefgh'
-    ),
-    new Contact (
-      'Jure',
-      'jure.juric@email.com',
-      '12ab34cd'
-    )
-];
-
 
 function App() {
 
-  const [username,setUsername] = useState();
-  const [contactList, setContactList] = useState(contacts);
+  const [loginUsername,setLoginUsername] = useState();
 
-
-  const onSuccessfullyRegister = (contact) => {
-    const newUsername = contact.username;
-    console.log(newUsername);
-    const newList = [...contactList, contact];
-    setContactList(newList);
-    setUsername(newUsername);
-    alert ("Hello! Welcome to Let's Toco - web chat application. You have successfuly registered. Please login now to use app!")
+  const onSuccessfullyLogin = (name) => {
+    const newLoginUsername = name;
+    console.log(newLoginUsername);
+    setLoginUsername(newLoginUsername);
   };
 
   const router = createBrowserRouter([
     {
       path: routes.home,
-      element: <Login contactList ={contactList} onSuccessfullyRegister={onSuccessfullyRegister}/>,
+      element: <Login onSuccessfullyLogin={onSuccessfullyLogin}/>,
     },
     {
       path: routes.chat,
-      element: <Chat contacts={contacts} username={username} />,
+      element: <Chat username={loginUsername} />,
     },
   ]);
 
