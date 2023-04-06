@@ -1,69 +1,113 @@
 import React from 'react';
-import avatar from '../assets/avatar.png';
 import 'bootstrap-icons/font/bootstrap-icons.css'
-import Message from '../components/Chat/Mesage';
+import Room from '../components/Chat/Room';
 import Footer from '../components/Chat/Footer';
-import Contact from '../components/Chat/Contact';
+import User from '../components/Chat/User';
 import Header from '../components/Chat/Header';
 import MessageSent from '../components/Chat/MessageSent';
-import MessageReceived from '../components/Chat/MessageReceived';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import './Chat.css';
+import { getRooms, sendMessage, subscribe } from '../services/Messaging';
 
 
 const Chat = (props) => {
+  const [activeRooms, setActiveRooms] = useState([]);
 
-  const [displayedMessages, setDisplayedMessages] = useState();
-  const [displayedContacts, setDisplayedContacts] = useState();
+  const [filteredRooms, setFilteredRooms] = useState(activeRooms);
+
+  const [currentRoom, setCurrentRoom] = useState('');
+  const [messageToSend, setMessageToSend] = useState('');
+
+  const [currentMessages, setCurrentMessages] = useState([]);
+
+  const [users, setUsers] = useState(['ana', 'petar','mate']);
+
+  const onNewMessage = (message) => {
+    setCurrentMessages([...currentMessages, message]);
+    console.log(currentMessages);
+  }
+
+  useEffect(() => {
+    subscribe('room', onNewMessage);
+    getRooms()
+      .then((rooms) => {
+        setActiveRooms(rooms)
+        setFilteredRooms(rooms)
+      })
+      .catch((e) => {
+        console.log(e.message)
+      })
+  }, []);
+
+  const onSubscribeRoom = (room) => {
+    setCurrentRoom(room);
+  };
 
 
-  const deleteMessage = () => {
-    console.log('delete message');
+
+  const handleSearch = (e) => {
+    const input = e.target.value;
+    if (input === '') {
+      setFilteredRooms(activeRooms);
+    } else {
+      setFilteredRooms(activeRooms.filter(
+        (object) => {
+          return object.startsWith(input);
+        }
+      ));
+    };
+  };
+
+
+  const onSendMessage = () => {
+    setCurrentMessages([...currentMessages, messageToSend]);
+    sendMessage(currentRoom, messageToSend);
+    setMessageToSend('');
   };
 
   return (
-    <div className="cacatu">
+    <div className="toco">
     <Header />
     <div className="chat-app">
-      <div className="messages-window">
-        <h3>Messages</h3>
-        <Message deleteMessage={deleteMessage}/>
-        <Message deleteMessage={deleteMessage}/>
-        <Message deleteMessage={deleteMessage}/>
+      <div className="room-window">
+        <div className='room-header'>
+          <h3>Rooms</h3>
+          <div className='searchbar'>
+              <i className="bi bi-search"></i>
+              <input
+                type="search"
+                placeholder='Search a room'
+                onChange = {handleSearch}/>
+          </div>
+        </div>
+        { filteredRooms.map((room, i) => <Room name={room} key={i} onClick={ onSubscribeRoom }/>)}
+        { filteredRooms.length === 0 && <p>No room found</p> }
       </div>
       <div className="chat-window">
-        <div className="chat-recipient">
-          <img src={avatar} width="40px" height="40px"></img>
-          <h4>Recipient</h4>
+        <div className="chat-room">
+          <h4>{currentRoom}</h4>
         </div>
         <div className="chat-conversation">
-          <MessageSent />
-          <MessageReceived />
-          <MessageSent />
-          <MessageReceived />
-          <MessageSent />
+          {
+            currentMessages.map((message) => <MessageSent name={props.username} message={message}/>)
+          }
         </div>
         <div className="send">
-          <input type="text" placeholder="Type your message"></input>
-          <button type="button">
+          <input type="text" placeholder="Type your message" value={messageToSend} onChange={ (e) => setMessageToSend(e.target.value) }></input>
+          <button type="button" onClick={ onSendMessage }>
             <i className="bi bi-chevron-right"></i>
           </button>
         </div>
       </div>
       <div className="contacts-window">
         <div className="contacts-header">
-          <h3>Contacts</h3>
-          <div className='searchbar'>
-            <i className="bi bi-search"></i>
-            <input
-              type="search"
-              placeholder='Search contact'/>
-            </div>
+          <h3>Users</h3>
         </div>
-        <Contact name={props.contacts[0].username} status='online' />
+        {users.map((element,i)=> <User name={element} key={i} status='online' />)}
+        {/*<Contact name={props.contacts[0].username} status='online' />
         <Contact name={props.contacts[1].username} status='idle' />
-        <Contact name={props.contacts[2].username} status='offline' />
+        <Contact name={props.contacts[2].username} status='offline' />*/}
       </div>
     </div>
     <Footer />

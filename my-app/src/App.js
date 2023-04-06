@@ -41,11 +41,16 @@ export function Contact(
 
 function App() {
 
+  const [username,setUsername] = useState();
   const [contactList, setContactList] = useState(contacts);
 
+
   const onSuccessfullyRegister = (contact) => {
+    const newUsername = contact.username;
+    console.log(newUsername);
     const newList = [...contactList, contact];
     setContactList(newList);
+    setUsername(newUsername);
     alert ("Hello! Welcome to Let's Toco - web chat application. You have successfuly registered. Please login now to use app!")
   };
 
@@ -56,7 +61,7 @@ function App() {
     },
     {
       path: routes.chat,
-      element: <Chat contacts={contacts} />,
+      element: <Chat contacts={contacts} username={username} />,
     },
   ]);
 

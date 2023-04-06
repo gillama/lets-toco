@@ -2,9 +2,9 @@ import React from 'react';
 import avatar from '../../assets/avatar.png';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-import './Contact.css';
+import './User.css';
 
-const Contact = (props) => {
+const User = (props) => {
   return (
     <div className="contact">
       <img src={avatar} width="40px" height="40px"></img>
@@ -12,9 +12,8 @@ const Contact = (props) => {
         <h4>{props.name}</h4>
         <p><span className={ "dot " + props.status }></span><i>{props.status}</i></p>
       </div>
-      <i className="bi bi-chat-text"></i>
   </div>
   )
 };
 
-export default Contact;
+export default User;

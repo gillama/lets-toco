@@ -27,14 +27,15 @@ body {
 .chat-conversation {
     box-sizing: border-box;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
+    justify-content: end;
     width: 100%;
     padding: 25px 15px;
     height: 650px;
 }
 
 
-.messages-window, .contacts-window {
+.room-window, .contacts-window {
     box-sizing: border-box;
     width: 350px;
     height: 800px;
@@ -44,10 +45,11 @@ body {
 }
 
 
-.messages-window, .contacts-window {
+.room-window, .contacts-window {
     display: flex;
     flex-direction: column;
 }
+
 
 .send {
     display: flex;
@@ -73,16 +75,16 @@ body {
 .send button {
     width: 12%;
     height: 100%;
-    background-color:#66b8b2;
+    background-color:#e9b23b;
     border: none;
     border-radius: 3px;
 }
 
 .send button:hover {
-    background-color: #55a69f;
+    background-color: #e6bb61;
 }
 
-.chat-recipient {
+.chat-room {
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -93,13 +95,13 @@ body {
     padding: 10px;
 }
 
-.chat-recipient h4 {
+.chat-room h4 {
     margin-left: 10px;
     letter-spacing: 1px;
 
 }
 
-.contacts-header{
+.room-header{
     height: 10%;
     display: flex;
     justify-content: space-between;
@@ -133,6 +135,7 @@ h3 {
     background-color: transparent;
     padding: 0 5px;
     font: 12px;
+    letter-spacing: 1px;
 }
 
 .searchbar input:focus {
@@ -143,8 +146,13 @@ h3 {
     font-size: 15px;
 }
 
-.messages-window h3 {
+.room-window h3 {
     height: 10%;
+}
+
+.room-window p {
+    text-align: center;
+    font-style: italic;
 }
 
 

@@ -32,8 +32,6 @@ const Login = (props) => {
     event.preventDefault();
     const loginData = new FormData(event.currentTarget);
     const loginDataValues = loginDataNames.map(value => loginData.get(value));
-    console.log(loginDataValues);
-
     const loginDataMissing = loginDataValues.some(value => !value);
     if (loginDataMissing) {
       alert("Please fill all the fields!");
