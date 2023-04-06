@@ -1,0 +1,87 @@
+.homepage {
+    display:block;
+    width: 30%;
+    margin: 20px auto;
+}
+
+.homepage-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:5px;
+}
+
+
+.login-form, .register-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    gap: 12px;
+}
+
+
+input {
+    height: 40px;
+    width: 80%;
+    border: 2px solid #e9b23b;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+input::placeholder {
+    color: rgb(50, 48, 48);
+    font-size: 15px;
+    letter-spacing: 2px;
+}
+
+.homepage button {
+    width: 23%;
+    height: 35px;
+    background-color:#66b8b2;
+    border: none;
+    border-radius: 2px;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    letter-spacing: 1px;
+    margin-top: 10px;
+}
+
+.homepage button:hover{
+    background-color: #55a69f;
+}
+
+
+form input:focus {
+    outline: none;
+}
+
+@keyframes animation {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-8px); }
+}
+
+.bi-chevron-double-down {
+    margin-top: 7px;
+    font-size: 20px;
+    cursor: pointer;
+    animation: animation 0.3s infinite  alternate;
+
+}
+
+.homepage-content > p {
+    font-size: 15px;
+    margin-top: 12px;
+    color: rgb(50, 48, 48);
+}
+
+.homepage img {
+    display: block;
+    width: 40%;
+    height: auto;
+    margin: 100px auto 20px auto;
+}
+

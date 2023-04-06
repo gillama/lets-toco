@@ -1,0 +1,52 @@
+.message {
+    width: 93%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    margin: 3px auto;
+    background-color: #e3b44f;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+
+.message:hover {
+    background-color: #eac77b;
+}
+
+.message:hover .bi-trash3{
+    visibility: visible;
+}
+
+
+.message h4 {
+    color: black;
+}
+
+
+.message-data {
+    width: 65%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+}
+
+.message-data{
+    cursor: pointer;
+}
+
+.message-data h4,p {
+    margin:0;
+}
+
+
+.bi-trash3 {
+    visibility: hidden;
+    font-size: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+

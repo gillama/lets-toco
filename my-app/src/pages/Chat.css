@@ -1,0 +1,153 @@
+body {
+    background-color: #e6bb61;
+}
+
+
+.chat-app {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+
+.chat-window {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 700px;
+    height: 800px;
+    background-color:  #f5e3bd;
+    border: 1px solid transparent;
+    position: relative;
+    border-radius: 3px;
+}
+
+
+.chat-conversation {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column-reverse;
+    width: 100%;
+    padding: 25px 15px;
+    height: 650px;
+}
+
+
+.messages-window, .contacts-window {
+    box-sizing: border-box;
+    width: 350px;
+    height: 800px;
+    background-color: #f5e3bd;
+    border: 1px solid transparent;
+    border-radius: 3px;
+}
+
+
+.messages-window, .contacts-window {
+    display: flex;
+    flex-direction: column;
+}
+
+.send {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    position: absolute;
+    bottom: 20px;
+    height:6%;
+}
+
+.send > input {
+    width: 83%;
+    box-sizing: border-box;
+    height: 100%;
+    border: 1px solid #e9b23b;
+    border-radius: 3px;
+}
+
+.send input:focus {
+    outline: none;
+}
+
+.send button {
+    width: 12%;
+    height: 100%;
+    background-color:#66b8b2;
+    border: none;
+    border-radius: 3px;
+}
+
+.send button:hover {
+    background-color: #55a69f;
+}
+
+.chat-recipient {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 10%;
+    background-color: white;
+    border-bottom: 1px solid #e6bb61;
+    padding: 10px;
+}
+
+.chat-recipient h4 {
+    margin-left: 10px;
+    letter-spacing: 1px;
+
+}
+
+.contacts-header{
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+h3 {
+    display: flex;
+    align-items: center;
+    letter-spacing: 2px;
+    padding-left: 15px;
+    margin: 0;
+}
+
+.button {
+    display: flex;
+}
+
+
+.bi-chevron-right {
+    font-size: 18px;
+}
+
+.searchbar {
+    padding: 10px;
+}
+
+.searchbar input {
+    border: none;
+    background-color: transparent;
+    padding: 0 5px;
+    font: 12px;
+}
+
+.searchbar input:focus {
+    outline: none;
+}
+
+.bi-search{
+    font-size: 15px;
+}
+
+.messages-window h3 {
+    height: 10%;
+}
+
+
+
+
+

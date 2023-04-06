@@ -1,0 +1,63 @@
+.contact {
+    width: 93%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    margin: 3px auto;
+    background-color: #e3b44f;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.contact:hover{
+    background-color: #eac77b;
+}
+
+.contact:hover .bi-chat-text{
+    visibility: visible;
+}
+
+.contact-status {
+    width: 65%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+}
+
+
+.contact-status h4,p{
+    margin:0;
+}
+
+.bi-chat-text {
+    visibility: hidden;
+    font-size: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+
+}
+
+.dot {
+    height: 10px;
+    width: 10px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+
+.idle {
+    background-color: rgb(246, 255, 0);
+}
+
+.offline {
+    background-color: red;
+}
+
+.online {
+    background-color: green;
+}
