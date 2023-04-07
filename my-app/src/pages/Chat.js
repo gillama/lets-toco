@@ -15,6 +15,16 @@ import { getRooms, sendMessage, subscribe } from '../services/Messaging';
 
 
 const Chat = (props) => {
+  const [user, setUser] = useState(() => {
+    const saved = {
+      username: localStorage.getItem("username"),
+      password: localStorage.getItem("password"),
+      email: localStorage.getItem("email"),
+      color: localStorage.getItem("color"),
+    };
+    return saved || props.user;
+  });
+
   const [activeRooms, setActiveRooms] = useState([]);
 
   const [filteredRooms, setFilteredRooms] = useState(activeRooms);
@@ -22,19 +32,23 @@ const Chat = (props) => {
   const [currentRoom, setCurrentRoom] = useState('');
   const [messageToSend, setMessageToSend] = useState('');
 
-  const [sentMessages, setSentMessages] = useState([]);
-  const [receivedMessages, setReceivedMessages] = useState([]);
+  const [messages, setMessages] = useState([]);
 
-  const [users, setUsers] = useState(['ana', 'petar','mate']);
+  const [activeUsers, setActiveUsers] = useState([]);
 
   const onNewMessage = (message) => {
-    if (message.data.username === props.username) {
+    if (message.data.username === user.username) {
       return;
     }
 
     const sound = new Audio(notification);
     sound.play();
-    setReceivedMessages([...receivedMessages, message.data]);
+    setMessages((prevMessages) => [
+      ...prevMessages, {
+      ...message.data,
+      timestamp: message.timestamp,
+      isSent: false
+    }]);
   }
 
   useEffect(() => {
@@ -45,12 +59,39 @@ const Chat = (props) => {
       })
       .catch((e) => {
         console.log(e.message)
-      })
+      });
   }, []);
 
   const onSubscribeRoom = (room) => {
     setCurrentRoom(room);
-    subscribe(room, onNewMessage);
+    subscribe(
+      room,
+      onNewMessage,
+      (newMembers) => {
+        setActiveUsers(
+          newMembers.map(m => {
+            if (m.clientData) {
+              return m.clientData.username;
+            }
+            return m.id;
+          }
+        ));
+      },
+      (newMember) => {
+        setActiveUsers((prevUsers) => [
+          ...prevUsers,
+          newMember.clientData.username
+        ]);
+      },
+      (oldMember) => {
+        setActiveUsers((prevUsers) => prevUsers.filter((username) => {
+          if (oldMember.clientData) {
+            return username !== oldMember.clientData.username;
+          }
+          return username !== oldMember.id;
+        }));
+      }
+    );
   };
 
   const handleSearch = (e) => {
@@ -72,12 +113,19 @@ const Chat = (props) => {
       return;
     }
 
+    if (messageToSend === '') {
+      return;
+    }
+
     const message = {
-      username: props.username,
-      data: messageToSend
+      username: user.username,
+      color: user.color,
+      data: messageToSend,
+      timestamp: Math.floor((new Date()).getTime() / 1000),
+      isSent: true
     };
 
-    setSentMessages([...sentMessages, message]);
+    setMessages((prevMessages) => [...prevMessages, message]);
     sendMessage(currentRoom, message);
     setMessageToSend('');
   };
@@ -98,7 +146,7 @@ const Chat = (props) => {
           </div>
         </div>
         { filteredRooms && filteredRooms.map((room, i) => <Room name={room} key={i} onClick={ onSubscribeRoom }/>)}
-        { !filteredRooms && <p>No room found</p> }
+        { filteredRooms.length === 0 && <p>No room found</p> }
       </div>
       <div className="chat-window">
         <div className="chat-room">
@@ -106,10 +154,13 @@ const Chat = (props) => {
         </div>
         <div className="chat-conversation">
           {
-            sentMessages.map((message) => <MessageSent name={props.username} message={message.data}/>)
-          }
-          {
-            receivedMessages.map((message) => <MessageReceived name={message.username} message={message.data}/>)
+            messages.sort((message) => message.timestamp).map((message, i) => {
+              if (message.isSent) {
+                return <MessageSent key={i} name={user.username} message={message.data} color={user.color} time={message.timestamp}/>;
+              } else {
+                return <MessageReceived key={i} name={message.username} message={message.data} color={message.color} time={message.timestamp}/>; 
+              }
+            })
           }
         </div>
         <div className="send">
@@ -123,7 +174,7 @@ const Chat = (props) => {
         <div className="contacts-header">
           <h3>Users</h3>
         </div>
-        {users.map((element,i)=> <User name={element} key={i} status='online' />)}
+        { activeUsers.map((username, i)=> <User name={username} key={i} status='online' />) }
       </div>
     </div>
     <Footer />

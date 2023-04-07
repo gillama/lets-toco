@@ -7,14 +7,19 @@ import Logo from '../assets/logo.png';
 import sha256 from 'crypto-js/sha256';
 
 import './Login.css';
+import { initScaledrone } from '../services/Messaging';
 
 const Login = (props) => {
+  function randomColor() {
+    return '#' + Math.floor(Math.random() * 0xFFFFFF).toString(16);
+  }
 
   const [registeredUser, setRegisteredUser] = useState(() => {
     const saved = {
       username: localStorage.getItem("username"),
       password: localStorage.getItem("password"),
       email: localStorage.getItem("email"),
+      color: localStorage.getItem("color"),
     };
     return saved || {};
   });
@@ -45,11 +50,11 @@ const Login = (props) => {
       alert("Please fill all the fields!");
       return;
     } else if (registeredUser.username === loginDataValues[0] && registeredUser.password == sha256(loginDataValues[1]).toString()) {
-        props.onSuccessfullyLogin(registeredUser.username);
+        props.onSuccessfullyLogin(registeredUser);
+        initScaledrone(registeredUser.username);
         navigate(routes.chat);
         return;
     }
-    console.log(sha256(loginDataValues[1]).toString())
     return alert ("Invalid username or password!");
   };
 
@@ -64,8 +69,7 @@ const Login = (props) => {
       alert("Please fill all the fields!");
       return;
     }
-
-    let user = new User(...registerDataValues);
+    let user = new User(...registerDataValues, randomColor());
     user.password = sha256(user.password);
     setRegisteredUser(user);
     alert ("Hello! Welcome to Let's Toco - web chat application. You have successfuly registered. Please login now to use app!")
@@ -77,6 +81,7 @@ const Login = (props) => {
     localStorage.setItem("username", registeredUser.username);
     localStorage.setItem("email", registeredUser.email);
     localStorage.setItem("password", registeredUser.password);
+    localStorage.setItem("color", registeredUser.color);
   }, [registeredUser]);
 
   return (

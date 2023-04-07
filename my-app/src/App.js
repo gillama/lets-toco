@@ -14,21 +14,21 @@ export function User(
   username,
   email,
   password,
+  color,
 ) {
   this.username = username;
   this.email = email;
   this.password = password;
+  this.color = color;
 }
 
 
 function App() {
 
-  const [loginUsername,setLoginUsername] = useState();
+  const [user,setUser] = useState({});
 
-  const onSuccessfullyLogin = (name) => {
-    const newLoginUsername = name;
-    console.log(newLoginUsername);
-    setLoginUsername(newLoginUsername);
+  const onSuccessfullyLogin = (user) => {
+    setUser(user);
   };
 
   const router = createBrowserRouter([
@@ -38,7 +38,7 @@ function App() {
     },
     {
       path: routes.chat,
-      element: <Chat username={loginUsername} />,
+      element: <Chat user={user}/>,
     },
   ]);
 
