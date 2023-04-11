@@ -25,8 +25,8 @@ const Login = (props) => {
   });
 
   const [isHidden, setIsHidden] = useState(true);
-  const showRegisterForm = () => {
-    setIsHidden(false);
+  const toggleRegisterForm = () => {
+    setIsHidden(!isHidden);
   }
 
   const navigate = useNavigate();
@@ -95,7 +95,7 @@ const Login = (props) => {
           <button type='submit'>Login</button>
         </form>
         <p>Don't have an account?</p>
-        <i className="bi bi-chevron-double-down" onClick={showRegisterForm}></i>
+        <i className="bi bi-chevron-double-down" onClick={toggleRegisterForm}></i>
           <form className='register-form' onSubmit={onRegister} style={{ visibility: isHidden ? 'hidden' : 'visible' }}>
             <input type="text" name ='username' placeholder='Username' />
             <input type="email" name ='email' placeholder='Email' />
