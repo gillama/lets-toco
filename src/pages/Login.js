@@ -23,6 +23,7 @@ const Login = (props) => {
     };
     return saved || {};
   });
+
   const [isHidden, setIsHidden] = useState(true);
   const showRegisterForm = () => {
     setIsHidden(false);

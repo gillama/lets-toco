@@ -1,14 +1,13 @@
 import React from 'react';
 import avatar from '../../assets/avatar.png';
-import 'bootstrap-icons/font/bootstrap-icons.css';
 
 import './User.css';
 
 const User = (props) => {
   return (
-    <div className="contact">
+    <div className="user">
       <img src={avatar} width="40px" height="40px"></img>
-      <div className="contact-status">
+      <div className="user-status">
         <h4>{props.name}</h4>
         <p><span className={ "dot " + props.status }></span><i>{props.status}</i></p>
       </div>

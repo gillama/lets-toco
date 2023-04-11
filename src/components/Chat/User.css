@@ -1,24 +1,22 @@
-.contact {
-    width: 93%;
+.user {
+    box-sizing: border-box;
+    width: 95%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 50px;
+    height: 60px;
     margin: 3px auto;
     background-color: #e3b44f;
-    padding: 5px;
+    padding: 8px;
     border-radius: 3px;
 }
 
-.contact:hover{
+.user:hover{
     background-color: #eac77b;
 }
 
-.contact:hover .bi-chat-text{
-    visibility: visible;
-}
 
-.contact-status {
+.user-status {
     width: 80%;
     height: 80%;
     display: flex;
@@ -28,16 +26,8 @@
 }
 
 
-.contact-status h4,p{
+.user-status h4,p{
     margin:0;
-}
-
-.bi-chat-text {
-    visibility: hidden;
-    font-size: 20px;
-    margin-right: 10px;
-    cursor: pointer;
-
 }
 
 .dot {
@@ -49,14 +39,6 @@
     margin-right: 5px;
 }
 
-
-.idle {
-    background-color: rgb(246, 255, 0);
-}
-
-.offline {
-    background-color: red;
-}
 
 .online {
     background-color: green;

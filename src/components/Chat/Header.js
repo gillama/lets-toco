@@ -17,10 +17,8 @@ const logOut = () => {
   return (
     <div className="header">
       <img src={logo}></img>
-      <div className="button-logout">
-        <i className="bi bi-box-arrow-right" onClick={logOut}></i>
-      </div>
-  </div>
+      <i className="bi bi-box-arrow-right" onClick={logOut}></i>
+    </div>
   )
 };
 

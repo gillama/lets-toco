@@ -1,4 +1,4 @@
-.header{
+.header {
     width: 1400px;
     height: 100px;
     margin: 0 auto;
@@ -7,7 +7,7 @@
     justify-content: space-between;
 }
 
-.button-logout {
+.header .bi {
     font-size: 30px;
     cursor: pointer;
     margin: 5px;
